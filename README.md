@@ -1,7 +1,9 @@
 # PhotoVault
+
 API para salvar arquivos, como imagens, inicialmente projetada para integração com o MinIO.
 
-# Tecnologias
+## Tecnologias
+
 - Python
 - FastAPI
 - MinIO
