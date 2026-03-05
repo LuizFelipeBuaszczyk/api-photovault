@@ -1,13 +1,15 @@
 from minio import Minio
+from minio.helpers import ObjectWriteResult
 
 from utils import settings
+from model.object_model import ObjectModel
 
 class MinioRepository:
     _client = Minio(
         endpoint=settings.MINIO_ENDPOINT,
         access_key=settings.MINIO_ACCESS_KEY,
         secret_key=settings.MINIO_SECRET_KEY,
-        secure=False
+        secure=False if settings.DEBUG else True # Se for ambiente de desenvolvimento, usar http
     )
     
     @classmethod
@@ -17,4 +19,26 @@ class MinioRepository:
     @classmethod
     def create_bucket(cls, bucket_name: str) -> None:
         cls._client.make_bucket(bucket_name)
+        
+    @classmethod
+    def delete_bucket(cls, bucket_name: str) -> None:
+        cls._client.remove_bucket(bucket_name)
+        
+    @classmethod
+    def create_object_bytes(cls, object: ObjectModel) -> ObjectWriteResult:
+        return cls._client.put_object(
+            bucket_name=object.bucket_name, 
+            object_name=object.object_name, 
+            data=object.file_bytes,
+            length=object.length,
+            content_type=object.content_type
+            )
+        
+    @classmethod
+    def create_object_file(cls, object: ObjectModel) -> ObjectWriteResult:
+        return cls._client.fput_object(
+            bucket_name=object.bucket_name, 
+            object_name=object.object_name, 
+            file_path=object.file_path
+            )
     

@@ -1,12 +1,12 @@
 from repositories.minio_repository import MinioRepository 
-from exceptions import bucket_exception as exc   
+from exceptions.bucket_exception import BucketAlreadyExists   
 
 class BucketService:
     
     @classmethod
-    def create_bucket(cls, bucket_name: str) -> None:
+    async def create_bucket(cls, bucket_name: str) -> None:
         if MinioRepository.exists_bucket(bucket_name):
-            raise exc.BucketAlreadyExists()
+            raise BucketAlreadyExists()
         
         MinioRepository.create_bucket(bucket_name)
         return

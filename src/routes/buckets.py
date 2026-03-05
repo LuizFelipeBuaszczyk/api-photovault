@@ -10,5 +10,5 @@ router = APIRouter(
 )
 
 @router.post("/", response_model=response.GetBucketResponse)
-def create_bucket(body: request.CreateBucketRequest):
-    return BucketController.create_bucket(body)
+async def create_bucket(body: request.CreateBucketRequest):
+    return await BucketController.create_bucket(body)
