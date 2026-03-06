@@ -1,0 +1,16 @@
+services:
+  api:
+    container_name: api-aistor
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+  minio:
+    container_name: minio-aistor
+    build:
+      context: ./src/infra/minio
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+      - "9001:9001"
