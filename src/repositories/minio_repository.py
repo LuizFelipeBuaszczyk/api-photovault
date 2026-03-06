@@ -1,5 +1,7 @@
 from minio import Minio
 from minio.helpers import ObjectWriteResult
+from minio.datatypes import Object
+from urllib3.response import BaseHTTPResponse
 
 from utils import settings
 from model.object_model import ObjectModel
@@ -11,6 +13,7 @@ class MinioRepository:
         secret_key=settings.MINIO_SECRET_KEY,
         secure=False if settings.DEBUG else True # Se for ambiente de desenvolvimento, usar http
     )
+    
     
     @classmethod
     def exists_bucket(cls, bucket_name: str) -> bool:
@@ -42,3 +45,12 @@ class MinioRepository:
             file_path=object.file_path
             )
     
+    @classmethod
+    def get_object_url(cls, bucket_name: str, object_name: str):
+        return cls._client.presigned_get_object(bucket_name, object_name)
+        
+    @classmethod
+    def exists_object(cls, bucket_name: str, object_name: str) -> Object:
+        return cls._client.stat_object(bucket_name, object_name)
+        
+        

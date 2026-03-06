@@ -10,7 +10,17 @@ from exceptions.exceptions import AppException
 
 class ObjectController:
     
-    
+    @staticmethod
+    async def get_object(bucket_name: str, object_name: str) -> JSONResponse:        
+        object_url = await ObjectService.get_object_by_name(bucket_name, object_name)
+                
+        object_response = response.GetObjectResponse(url=object_url)
+        
+        return JSONResponse(
+            status_code=status.HTTP_200_OK, 
+            content=object_response.model_dump()
+        )
+        
     @staticmethod
     async def upload_object(file: UploadFile, bucket_name: str, object_name: str) -> JSONResponse:
         data = ObjectModel(

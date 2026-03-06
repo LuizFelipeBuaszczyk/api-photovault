@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from .objects import router as object_router
+from .buckets_objects import router as object_router
 from .buckets import router as bucket_router
 
 api_router = APIRouter()
